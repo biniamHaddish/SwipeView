@@ -1,0 +1,4 @@
+<resources>
+    <string name="app_name">SwipeView</string>
+    <string name="action_refresh">refresh</string>
+</resources>
