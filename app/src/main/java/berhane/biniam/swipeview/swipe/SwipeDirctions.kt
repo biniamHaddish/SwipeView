@@ -7,5 +7,6 @@ class SwipeDirctions {
         val RIGHT = 1
         val LEFT_LONG = 4
         val RIGHT_LONG = 3
+        val IDLE=0
     }
 }

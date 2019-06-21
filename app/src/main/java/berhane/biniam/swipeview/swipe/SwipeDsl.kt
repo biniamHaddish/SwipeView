@@ -49,7 +49,11 @@ class SwipeBuilder {
         val swipeLongRightAction = swipeLongRightBuilder?.build()
         val swipeLongLeftAction = swipeLongLeftBuilder?.build()
 
-        return object : GenericSwipeCallback(swipeLeftAction, swipeRightAction, swipeLongRightAction,swipeLongLeftAction) {
+        return object : GenericSwipeCallback(
+            swipeLeftAction,
+            swipeRightAction,
+            swipeLongRightAction,
+            swipeLongLeftAction) {
 
             override fun getAvailableDirections(): Int {
 

@@ -27,10 +27,9 @@ class MainActivity : AppCompatActivity() {
 
         recyclerView.layoutManager = LinearLayoutManager(this)
         recyclerView.addItemDecoration(DividerItemDecoration(this, LinearLayoutManager.VERTICAL))
-
-
-
-
+        /**
+         * Some Swipe Impl
+         */
         recyclerView.whenSwipedTo {
 
             left {
@@ -75,6 +74,10 @@ class MainActivity : AppCompatActivity() {
         mAdapter = SampleRecyclerViewAdapter(this)
         recyclerView.adapter = mAdapter
     }
+
+
+
+
 
     private fun getDrawableInt(@DrawableRes resDrw: Int? = null, drawable: Drawable? = null): Drawable? {
         return drawable ?: ContextCompat.getDrawable(this, resDrw!!)

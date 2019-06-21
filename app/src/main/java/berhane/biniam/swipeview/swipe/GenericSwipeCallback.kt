@@ -1,6 +1,3 @@
-
-
-
 package berhane.biniam.swipeview.swipe
 
 import android.graphics.Canvas
@@ -10,6 +7,7 @@ import androidx.annotation.RestrictTo
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.ItemTouchHelper.*
 import androidx.recyclerview.widget.RecyclerView
+import  berhane.biniam.swipeview.swipe.SwipeDirections.*
 import kotlin.math.abs
 
 enum class SwipeDirections {
@@ -20,23 +18,13 @@ enum class SwipeDirections {
     IDLE
 }
 
-
-internal const val ACTION_NAME = "swipe_actions"
-
-internal data class ActionKey(
-    val direction: SwipeDirections
-)
-
-
 @Suppress("IMPLICIT_CAST_TO_ANY")
 abstract class GenericSwipeCallback(
     private var swipeLeft: SwipeAction? = null,
     private var swipeRight: SwipeAction? = null,
     private var swipeLongRight: SwipeAction? = null,
     private var swipeLongLeft: SwipeAction? = null
-) : ItemTouchHelper.Callback() {
-
-    // internal val actions: MutableMap<ActionKey, String> = mutableMapOf()
+) : ItemTouchHelper.Callback(), SwipeActionsTrigger {
 
     private val BASE_ALPHA = 1.0f
     private var isViewBeingCleared = false
@@ -69,7 +57,7 @@ abstract class GenericSwipeCallback(
         return true
     }
 
-    @RestrictTo(RestrictTo.Scope.LIBRARY_GROUP)
+    //@RestrictTo(RestrictTo.Scope.LIBRARY_GROUP)
     override fun onSwiped(
         viewHolder: RecyclerView.ViewHolder,
         direction: Int
@@ -78,24 +66,28 @@ abstract class GenericSwipeCallback(
 
         return when (direction) {
             LEFT -> {
-                //onSwipeLeftAction(position)
-                if (leftIsLong) {
-                    onSwipeLongLeftAction(position)
-
-                } else {
-                    onSwipeLeftAction(position)
+                when {
+                    leftIsLong -> {
+                        onSwipeLongLeftAction(position)
+                    }
+                    else -> {
+                        onSwipeLeftAction(position)
+                    }
                 }
             }
-            START -> {
-                onSwipeLeftAction(position)
-            }
             RIGHT -> {
-                onSwipeRightAction(position)
-                if (rightIsLong) onSwipeLongRightAction(position) else onSwipeRightAction(position)
+                when {
+                    rightIsLong -> {
+                        onSwipeLongRightAction(position)
+                    }
+                    else -> {
+                        onSwipeRightAction(position)
+                    }
+
+                }
+
             }
-            END -> {
-                onSwipeRightAction(position)
-            }
+
             else -> {
                 throw IllegalStateException("Unknown direction What is that ?: $direction")
             }
@@ -112,7 +104,9 @@ abstract class GenericSwipeCallback(
 
     override fun onChildDraw(
         canvas: Canvas, recyclerView: RecyclerView, viewHolder: RecyclerView.ViewHolder,
-        dX: Float, dY: Float, actionState: Int, isCurrentlyActive: Boolean
+        dX: Float, dY: Float,
+        actionState: Int,
+        isCurrentlyActive: Boolean
     ) {
         val itemView = viewHolder.itemView
         val index = viewHolder.adapterPosition
@@ -125,6 +119,7 @@ abstract class GenericSwipeCallback(
                 if (viewHolder.adapterPosition == -1) {
                     return
                 }
+                calculateSwipeVelocityPosition(actionState, isCurrentlyActive, itemView, index, dX)
                 processSwipeAction(canvas, itemView, dX)
             } else {
 
@@ -135,13 +130,44 @@ abstract class GenericSwipeCallback(
         }
     }
 
+    /**
+     *  Only for my use
+     */
+    @RestrictTo(RestrictTo.Scope.LIBRARY_GROUP)
+    private fun calculateSwipeVelocityPosition(
+        actionState: Int,
+        isCurrentlyActive: Boolean,
+        itemView: View,
+        viewIndex: Int,
+        dX: Float
+    ) {
+        hideItemDependingOnDx(dX, itemView)
+        when {
+            getSwipeDirection(dX, itemView) == RIGHT_LONG -> {
+                // long right interface implementation
+                swipeAction(actionState, isCurrentlyActive, viewIndex, RIGHT_LONG)
+            }
+            getSwipeDirection(dX, itemView) == SwipeDirections.RIGHT -> {
+                // Called when the View is swiped Right
+                swipeAction(actionState, isCurrentlyActive, viewIndex, SwipeDirections.RIGHT)
+            }
+            getSwipeDirection(dX, itemView) == LEFT_LONG -> {
+                // called when view Swiped far LEFT
+                swipeAction(actionState, isCurrentlyActive, viewIndex, LEFT_LONG)
+            }
+            getSwipeDirection(dX, itemView) == SwipeDirections.LEFT -> {
+                // Called when the View is swiped Left
+                swipeAction(actionState, isCurrentlyActive, viewIndex, SwipeDirections.LEFT)
+            }
+        }
+    }
+
 
     @RestrictTo(RestrictTo.Scope.LIBRARY_GROUP)
     private fun processSwipeAction(canvas: Canvas, itemView: View, dX: Float) {
         hideItemDependingOnDx(dX, itemView)
-
         when {
-            getSwipeDirection(dX, itemView) == SwipeDirections.RIGHT_LONG -> {
+            getSwipeDirection(dX, itemView) == RIGHT_LONG -> {
                 drawBackgroundWhenSwipeLongRight(canvas, dX, itemView)
                 drawSwipeLongRightIcon(canvas, itemView)
             }
@@ -149,7 +175,7 @@ abstract class GenericSwipeCallback(
                 drawBackgroundWhenSwipeRight(canvas, dX, itemView)
                 drawSwipeRightIcon(canvas, itemView)
             }
-            getSwipeDirection(dX, itemView) == SwipeDirections.LEFT_LONG -> {
+            getSwipeDirection(dX, itemView) == LEFT_LONG -> {
                 drawBackgroundWhenSwipeLongLeft(canvas, dX, itemView)
                 drawSwipeLongLeftIcon(canvas, itemView)
             }
@@ -161,7 +187,7 @@ abstract class GenericSwipeCallback(
     }
 
     private fun hideItemDependingOnDx(dX: Float, itemView: View) {
-        val alpha = BASE_ALPHA - Math.abs(dX) / itemView.width.toFloat()
+        val alpha = BASE_ALPHA - abs(dX) / itemView.width.toFloat()
         itemView.alpha = alpha
         itemView.translationX = dX
     }
@@ -215,12 +241,10 @@ abstract class GenericSwipeCallback(
                 rightDistance = dX
                 rightIsLong = rightDistance >= (LONG_SWIPE_THRESHOLD_PERCENT * itemView.measuredWidth)
                 return if (rightIsLong) {
-                    Log.e("Long Right", "Long Right....")
-
-                    SwipeDirections.RIGHT_LONG
+                    //Log.e("Long Right", "Long Right....")
+                    RIGHT_LONG
                 } else {
-
-                    Log.e("Right", "Right....")
+                    Log.d("Right", "Right....")
                     SwipeDirections.RIGHT
 
                 }
@@ -230,8 +254,8 @@ abstract class GenericSwipeCallback(
                 leftDistance = dX
                 leftIsLong = abs(leftDistance) >= (LONG_SWIPE_THRESHOLD_PERCENT * itemView.measuredWidth)
                 return if (leftIsLong) {
-                    Log.e("Long Left", "Long Left....")
-                    SwipeDirections.LEFT_LONG
+                    Log.d("Long Left", "Long Left....")
+                    LEFT_LONG
                 } else {
                     Log.e("Left", "Left....")
                     SwipeDirections.LEFT
@@ -240,7 +264,7 @@ abstract class GenericSwipeCallback(
 
         }
 
-        return SwipeDirections.IDLE
+        return IDLE
 
     }
 
@@ -316,7 +340,6 @@ abstract class GenericSwipeCallback(
         return 0.7f
     }
 
-
     private fun getItemMiddlePoint(itemView: View) = (itemView.bottom + itemView.top) / 2
 
     /**
@@ -339,4 +362,27 @@ abstract class GenericSwipeCallback(
         swipeLongRight?.action?.invoke(adapterPosition)
     }
 
+    /**
+     * lets do the Swipe action performed on this thing
+     *
+     */
+    override fun swipeAction(actionState: Int, isCurrentlyActive: Boolean, index: Int, swipeDir: SwipeDirections) {
+        when (swipeDir) {
+            SwipeDirections.LEFT -> {
+                if (!isCurrentlyActive) onSwipeLeftAction(index)
+            }
+            SwipeDirections.RIGHT -> {
+                if (!isCurrentlyActive) onSwipeRightAction(index)
+            }
+            RIGHT_LONG -> {
+                if (!isCurrentlyActive) onSwipeLongRightAction(index)
+            }
+            LEFT_LONG -> {
+                if (!isCurrentlyActive) onSwipeLongLeftAction(index)
+            }
+            IDLE -> {
+                Log.d("IDLE State ", "$isCurrentlyActive")
+            }
+        }
+    }
 }
