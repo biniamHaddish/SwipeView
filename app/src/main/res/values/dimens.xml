@@ -2,6 +2,7 @@
 <resources>
 
     <dimen name="swipe_default_text_size">16sp</dimen>
-
-
+    <dimen name="swipe_text_margin">35dp</dimen>
+    <dimen name="swipe_text_margin_less">16dp</dimen>
+    <dimen name="swipe_text_margin_half">12dp</dimen>
 </resources>

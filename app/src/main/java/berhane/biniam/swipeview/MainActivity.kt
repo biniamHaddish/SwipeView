@@ -2,9 +2,6 @@ package berhane.biniam.swipeview
 
 import android.graphics.drawable.Drawable
 import android.os.Bundle
-import android.util.Log
-import android.view.Menu
-import android.view.MenuItem
 import android.widget.Toast
 import androidx.annotation.DrawableRes
 import androidx.appcompat.app.AppCompatActivity
@@ -35,7 +32,6 @@ class MainActivity : AppCompatActivity() {
             left {
                 color = ContextCompat.getColor(this@MainActivity, R.color.md_blue)
                 icon = getDrawableInt(R.drawable.ic_action_archive)
-                iconMargin = 35
                 callback = {
                     mAdapter!!.notifyDataSetChanged()
                     Toast.makeText(this@MainActivity, "Swiped to Left", Toast.LENGTH_LONG).show()
@@ -44,7 +40,6 @@ class MainActivity : AppCompatActivity() {
             right {
                 color = ContextCompat.getColor(this@MainActivity, R.color.md_red)
                 icon = getDrawableInt(R.drawable.ic_action_star)
-                iconMargin = 35
                 callback = {
                     mAdapter!!.notifyDataSetChanged()
                     Toast.makeText(this@MainActivity, "Swiped to Right", Toast.LENGTH_LONG).show()
@@ -53,16 +48,15 @@ class MainActivity : AppCompatActivity() {
             longRight {
                 color = ContextCompat.getColor(this@MainActivity, R.color.md_orange)
                 icon = getDrawableInt(R.drawable.ic_action_delete)
-                iconMargin = 35
                 callback = {
+                    mAdapter!!.removeItem(it)
                     mAdapter!!.notifyDataSetChanged()
-                    Toast.makeText(this@MainActivity, "Swiped Long Right", Toast.LENGTH_LONG).show()
+                    Toast.makeText(this@MainActivity, "Item Deleted and Removed from the View ", Toast.LENGTH_LONG).show()
                 }
             }
             longLeft {
                 color = ContextCompat.getColor(this@MainActivity, R.color.md_green)
                 icon = getDrawableInt(R.drawable.ic_action_unread)
-                iconMargin = 35
                 callback = {
                     mAdapter!!.notifyDataSetChanged()
                     Toast.makeText(this@MainActivity, "Swiped  Long Left", Toast.LENGTH_LONG).show()
@@ -74,10 +68,6 @@ class MainActivity : AppCompatActivity() {
         mAdapter = SampleRecyclerViewAdapter(this)
         recyclerView.adapter = mAdapter
     }
-
-
-
-
 
     private fun getDrawableInt(@DrawableRes resDrw: Int? = null, drawable: Drawable? = null): Drawable? {
         return drawable ?: ContextCompat.getDrawable(this, resDrw!!)

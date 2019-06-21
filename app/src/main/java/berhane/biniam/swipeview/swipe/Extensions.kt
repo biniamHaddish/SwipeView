@@ -4,30 +4,35 @@ import android.content.Context
 import android.content.res.Resources
 import android.view.View
 import androidx.annotation.ColorRes
+import androidx.annotation.DimenRes
 import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
 import androidx.core.content.ContextCompat
+object Extensions{
 
-fun Context.getColorCompat(@ColorRes resId: Int) =
-    ContextCompat.getColor(this, resId)
+    fun Context.getColorCompat(@ColorRes resId: Int) =
+        ContextCompat.getColor(this, resId)
 
-fun View.getColorCompat(@ColorRes resId: Int) =
-    context.getColorCompat(resId)
+    fun View.getColorCompat(@ColorRes resId: Int) =
+        context.getColorCompat(resId)
+
+    fun Context.getDrawableCompat(@DrawableRes resId: Int) =
+        ContextCompat.getDrawable(this, resId)
+
+    fun View.getDrawableCompat(@DrawableRes resId: Int) =
+        context.getDrawableCompat(resId)
 
 
-fun Context.getDrawableCompat(@DrawableRes resId: Int) =
-    ContextCompat.getDrawable(this, resId)
+    fun Context.getStringCompat(@StringRes resId: Int) : String =
+        resources.getString(resId)
 
-fun View.getDrawableCompat(@DrawableRes resId: Int) =
-    context.getDrawableCompat(resId)
+    fun View.getStringCompat(@StringRes resId: Int) : String =
+        context.getStringCompat(resId)
 
+    fun Int.toDp() = (this / Resources.getSystem().displayMetrics.density).toInt()
 
-fun Context.getStringCompat(@StringRes resId: Int) : String =
-    resources.getString(resId)
+    fun Int.toPx() = (this * Resources.getSystem().displayMetrics.density).toInt()
 
-fun View.getStringCompat(@StringRes resId: Int) : String =
-    context.getStringCompat(resId)
+    fun dimToInt(dim:Int)= Resources.getSystem().getDimension(dim)
 
-fun Int.toDp() = (this / Resources.getSystem().displayMetrics.density).toInt()
-
-fun Int.toPx() = (this * Resources.getSystem().displayMetrics.density).toInt()
+}

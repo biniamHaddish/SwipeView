@@ -7,6 +7,7 @@ import androidx.annotation.RestrictTo
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.ItemTouchHelper.*
 import androidx.recyclerview.widget.RecyclerView
+import berhane.biniam.swipeview.R
 import  berhane.biniam.swipeview.swipe.SwipeDirections.*
 import kotlin.math.abs
 
@@ -19,7 +20,7 @@ enum class SwipeDirections {
 }
 
 @Suppress("IMPLICIT_CAST_TO_ANY")
-abstract class GenericSwipeCallback(
+abstract class SwipeListenerCallback(
     private var swipeLeft: SwipeAction? = null,
     private var swipeRight: SwipeAction? = null,
     private var swipeLongRight: SwipeAction? = null,
@@ -325,12 +326,10 @@ abstract class GenericSwipeCallback(
             val itemMiddlePoint = getItemMiddlePoint(itemView)
             val intrinsicHalfHeight = it.intrinsicHeight / 2
             val intrinsicWidth = it.intrinsicWidth
-
             val left = itemView.left + margin
             val right = left + intrinsicWidth
             val top = itemMiddlePoint - intrinsicHalfHeight
             val bottom = itemMiddlePoint + intrinsicHalfHeight
-
             it.setBounds(left, top, right, bottom)
             it.draw(c)
         }

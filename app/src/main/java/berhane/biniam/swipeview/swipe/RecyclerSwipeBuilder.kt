@@ -4,7 +4,6 @@ import android.graphics.Rect
 import android.graphics.drawable.ColorDrawable
 import android.graphics.drawable.Drawable
 import android.text.TextPaint
-import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
 
@@ -31,6 +30,9 @@ class SwipeActionBuilder {
     fun build(): SwipeAction = SwipeAction(
         text, background ?: color?.let { ColorDrawable(it) }, icon, iconMargin, callback
     )
+
+
+
 }
 
 @SwipeDsl
@@ -49,14 +51,13 @@ class SwipeBuilder {
         val swipeLongRightAction = swipeLongRightBuilder?.build()
         val swipeLongLeftAction = swipeLongLeftBuilder?.build()
 
-        return object : GenericSwipeCallback(
+        return object : SwipeListenerCallback(
             swipeLeftAction,
             swipeRightAction,
             swipeLongRightAction,
             swipeLongLeftAction) {
 
             override fun getAvailableDirections(): Int {
-
                 return when {
                     swipeLeftAction != null && swipeRightAction != null -> ItemTouchHelper.LEFT or ItemTouchHelper.RIGHT
                     swipeLeftAction != null -> ItemTouchHelper.LEFT
