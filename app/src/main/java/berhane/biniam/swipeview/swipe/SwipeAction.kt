@@ -8,6 +8,4 @@ class SwipeAction(
     val icon: Drawable? = null,
     val margin: Int? = 35,
     val action: (Int) -> Unit
-
-
 )

@@ -71,12 +71,16 @@ class SwipeBuilder {
         }
     }
 
-
+    /**
+     * When swiped to left
+     */
     fun left(setup: SwipeActionBuilder.() -> Unit) {
         this.swipeLeftBuilder = SwipeActionBuilder().apply(setup)
     }
 
-
+    /**
+     * When Swiped Right
+     */
     fun right(setup: SwipeActionBuilder.() -> Unit) {
         this.swipeRightBuilder = SwipeActionBuilder().apply(setup)
     }

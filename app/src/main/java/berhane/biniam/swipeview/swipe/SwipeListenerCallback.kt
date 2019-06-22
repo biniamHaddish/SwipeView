@@ -7,8 +7,7 @@ import androidx.annotation.RestrictTo
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.ItemTouchHelper.*
 import androidx.recyclerview.widget.RecyclerView
-import berhane.biniam.swipeview.R
-import  berhane.biniam.swipeview.swipe.SwipeDirections.*
+import berhane.biniam.swipeview.swipe.SwipeDirections.*
 import kotlin.math.abs
 
 enum class SwipeDirections {
@@ -58,6 +57,8 @@ abstract class SwipeListenerCallback(
         return true
     }
 
+     //  TODO(well since we have both the swipeAction implementation for the callback i have to correct this one so that it can only perform one action at a time)
+
     //@RestrictTo(RestrictTo.Scope.LIBRARY_GROUP)
     override fun onSwiped(
         viewHolder: RecyclerView.ViewHolder,
@@ -66,23 +67,24 @@ abstract class SwipeListenerCallback(
         val position = viewHolder.adapterPosition
 
         return when (direction) {
+
             LEFT -> {
                 when {
                     leftIsLong -> {
-                        onSwipeLongLeftAction(position)
+                       // onSwipeLongLeftAction(position)
                     }
                     else -> {
-                        onSwipeLeftAction(position)
+                       // onSwipeLeftAction(position)
                     }
                 }
             }
             RIGHT -> {
                 when {
                     rightIsLong -> {
-                        onSwipeLongRightAction(position)
+                      //  onSwipeLongRightAction(position)
                     }
                     else -> {
-                        onSwipeRightAction(position)
+                     // onSwipeRightAction(position)
                     }
 
                 }
@@ -380,8 +382,11 @@ abstract class SwipeListenerCallback(
                 if (!isCurrentlyActive) onSwipeLongLeftAction(index)
             }
             IDLE -> {
+
                 Log.d("IDLE State ", "$isCurrentlyActive")
             }
         }
     }
+
+
 }
