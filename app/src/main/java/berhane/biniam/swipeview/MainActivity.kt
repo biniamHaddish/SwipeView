@@ -1,11 +1,8 @@
 package berhane.biniam.swipeview
 
-import android.graphics.drawable.Drawable
 import android.os.Bundle
 import android.widget.Toast
-import androidx.annotation.DrawableRes
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import berhane.biniam.swipy.swipe.whenSwipedTo
@@ -73,7 +70,4 @@ class MainActivity : AppCompatActivity() {
         recyclerView.adapter = mAdapter
     }
 
-    private fun getDrawableInt(@DrawableRes resDrw: Int? = null, drawable: Drawable? = null): Drawable? {
-        return drawable ?: ContextCompat.getDrawable(this, resDrw!!)
-    }
 }
