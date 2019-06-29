@@ -1,21 +1,6 @@
-/**
- * Designed and developed by Aidan Follestad (@afollestad)
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
 @file:Suppress("unused")
 
-package berhane.biniam.swipeview.swipe
+package berhane.biniam.swipy.swipe
 
 import android.content.Context
 import android.graphics.Rect
@@ -23,42 +8,27 @@ import android.graphics.Typeface
 import android.graphics.drawable.ColorDrawable
 import android.graphics.drawable.Drawable
 import android.text.TextPaint
-import androidx.annotation.ColorInt
-import androidx.annotation.ColorRes
-import androidx.annotation.DimenRes
-import androidx.annotation.DrawableRes
-import androidx.annotation.FontRes
-import androidx.annotation.StringRes
+import androidx.annotation.*
 import androidx.core.content.ContextCompat
 import androidx.core.content.res.ResourcesCompat
-import berhane.biniam.swipeview.R
+import berhane.biniam.swipy.R
 
+typealias callback = (Int) -> Unit
 
-typealias SwipedCallback<IT> = (index: Int, item: IT) -> Boolean
+class SwipeDecorator<IT : Any>(private val context: Context) {
 
-
-
-/**
- * Represents what position the swipe callback represents. Left means a right-to-left swipe,
- * right means left-to-right swipe. A long swipe means you swipe further vs a short swipe.
- */
-
-@SwipeDsl
-class SwipeActions<IT : Any>(private val context: Context) {
-
-    internal var iconDrawable: Drawable? = null
-    internal var backgroundDrawable: ColorDrawable? = null
-    private var callback: SwipedCallback<IT>? = null
-
-    internal var text: String? = null
-    internal var textPaint: TextPaint? = null
+    var iconDrawable: Drawable? = null
+    var backgroundDrawable: ColorDrawable? = null
+    var text: String? = null
+    var callback: callback? = null
+    var textPaint: TextPaint? = null
     private var textBounds: Rect? = null
 
     /** Sets an optional icon that is shown in the swipe gutter. */
-    fun icon(
+    fun setIcon(
         @DrawableRes res: Int? = null,
         literal: Drawable? = null
-    ): SwipeActions<IT> {
+    ): SwipeDecorator<IT> {
         require(res != null || literal != null) {
             "Must provide a res or literal value to icon()"
         }
@@ -67,10 +37,10 @@ class SwipeActions<IT : Any>(private val context: Context) {
     }
 
     /** Sets the color of the swipe gutter. */
-    fun color(
+    fun setColor(
         @ColorRes res: Int? = null,
         @ColorInt literal: Int? = null
-    ): SwipeActions<IT> {
+    ): SwipeDecorator<IT> {
         require(res != null || literal != null) {
             "Must provide a res or literal value to color()"
         }
@@ -79,15 +49,28 @@ class SwipeActions<IT : Any>(private val context: Context) {
         return this
     }
 
+    /**
+     * Callback for the swipe actions on the Items
+     */
+    fun setCallback(block: callback): SwipeDecorator<IT> {
+        this.callback = block
+        return this
+    }
+
+
+    internal fun invokeCallback(adapterPos: Int) {
+        callback?.invoke(adapterPos)
+    }
+
     /** Sets optional text that is shown in the swipe gutter. */
-    fun text(
+    fun setText(
         @StringRes res: Int? = null,
         literal: String? = null,
         @ColorRes color: Int = android.R.color.white,
         @DimenRes size: Int = R.dimen.swipe_default_text_size,
         typeface: Typeface? = null,
         @FontRes typefaceRes: Int? = null
-    ): SwipeActions<IT> {
+    ): SwipeDecorator<IT> {
         require(res != null || literal != null) {
             "Must provide a res or literal value to text()"
         }
@@ -108,27 +91,10 @@ class SwipeActions<IT : Any>(private val context: Context) {
         return this
     }
 
-    /**
-     * Sets a callback that is invoked when the swipe action is fired. Return true in the callback
-     * to remove the swiped item from the data source automatically. Returning false will animate
-     * the item back in place.
-     */
-    fun callback(block: SwipedCallback<IT>): SwipeActions<IT> {
-        this.callback = block
-        return this
-    }
 
-    internal fun getTextWidth(): Int = getTextBounds().width()
+    fun getTextWidth(): Int = getTextBounds().width()
 
     internal fun getTextHeight(): Int = getTextBounds().height()
-
-    internal fun sendToCallback(
-        index: Int,
-        item: Any
-    ): Boolean {
-        @Suppress("UNCHECKED_CAST")
-        return callback?.invoke(index, item as IT) ?: false
-    }
 
     private fun getTextBounds(): Rect {
         require(text != null) { "text is null" }
