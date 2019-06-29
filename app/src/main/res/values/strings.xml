@@ -1,4 +1,7 @@
 <resources>
     <string name="app_name">SwipeView</string>
     <string name="action_refresh">refresh</string>
+    <string name="action_delete">Delete</string>
+    <string name="action_pin">Pin</string>
+    <string name="action_save">Save</string>
 </resources>
