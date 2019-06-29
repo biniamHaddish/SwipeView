@@ -8,7 +8,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
-import berhane.biniam.swipeview.swipe.whenSwipedTo
+import berhane.biniam.swipy.swipe.whenSwipedTo
 import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity() {
@@ -26,48 +26,49 @@ class MainActivity : AppCompatActivity() {
         recyclerView.addItemDecoration(DividerItemDecoration(this, LinearLayoutManager.VERTICAL))
         /**
          * Some Swipe Impl
+         *
          */
         recyclerView.whenSwipedTo {
 
             left {
-                color = ContextCompat.getColor(this@MainActivity, R.color.md_blue)
-                icon = getDrawableInt(R.drawable.ic_action_archive)
-                iconMargin=35
-                callback = {
+                setColor(R.color.md_blue)
+                setIcon(R.drawable.ic_action_archive)
+                callback {
                     mAdapter!!.notifyDataSetChanged()
                     Toast.makeText(this@MainActivity, "Swiped to Left", Toast.LENGTH_LONG).show()
                 }
             }
+
             right {
-                color = ContextCompat.getColor(this@MainActivity, R.color.md_red)
-                icon = getDrawableInt(R.drawable.ic_action_star)
-                iconMargin=35
-                callback = {
+                setColor(R.color.md_red)
+                setIcon(R.drawable.ic_action_star)
+                callback{
                     mAdapter!!.notifyDataSetChanged()
-                    Toast.makeText(this@MainActivity, "Swiped to Right", Toast.LENGTH_LONG).show()
+                  Toast.makeText(this@MainActivity, "Swiped to Right", Toast.LENGTH_LONG).show()
                 }
             }
+
             longRight {
-                color = ContextCompat.getColor(this@MainActivity, R.color.md_orange)
-                icon = getDrawableInt(R.drawable.ic_action_delete)
-                callback = {
-                    iconMargin=35
+                setColor(R.color.md_orange)
+                setIcon(R.drawable.ic_action_delete)
+                callback {
                     mAdapter!!.removeItem(it)
                     mAdapter!!.notifyDataSetChanged()
-                    Toast.makeText(this@MainActivity, "Item Deleted and Removed from the View $it", Toast.LENGTH_LONG).show()
-
+                    Toast.makeText(this@MainActivity, "Item Deleted and Removed from the View $it", Toast.LENGTH_LONG)
+                        .show()
                 }
             }
+
             longLeft {
-                color = ContextCompat.getColor(this@MainActivity, R.color.md_green)
-                icon = getDrawableInt(R.drawable.ic_action_unread)
-                iconMargin=35
-                callback = {
+                setColor(R.color.md_green)
+                setIcon(R.drawable.ic_action_unread)
+                callback {
                     mAdapter!!.notifyDataSetChanged()
                     Toast.makeText(this@MainActivity, "Swiped  Long Left $it", Toast.LENGTH_LONG).show()
                 }
             }
         }
+
         mAdapter = SampleRecyclerViewAdapter(this)
         recyclerView.adapter = mAdapter
     }
