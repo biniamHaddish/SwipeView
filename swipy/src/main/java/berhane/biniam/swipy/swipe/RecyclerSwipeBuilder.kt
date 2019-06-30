@@ -71,7 +71,7 @@ class SwipeBuilder {
     }
 
     /**
-     * long Left Swipe Action for the RecyclerView
+     * long Left Swipe Action for the RecyclerView view-holder
      */
     fun longLeft(setup: SwipeActionBuilders.() -> Unit) {
         this.swipeLongLeftBuilder = SwipeActionBuilders().apply(setup)
