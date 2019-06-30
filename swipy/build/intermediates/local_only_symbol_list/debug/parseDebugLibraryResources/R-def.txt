@@ -1,7 +1,4 @@
 R_DEF: Internal format may change without notice
 local
 dimen swipe_default_text_size
-dimen swipe_text_margin
-dimen swipe_text_margin_half
-dimen swipe_text_margin_less
 string app_name

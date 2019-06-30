@@ -1,3 +1,4 @@
+
 package berhane.biniam.swipeview
 
 import android.os.Bundle
@@ -18,15 +19,14 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-
-        recyclerView.layoutManager = LinearLayoutManager(this)
-        recyclerView.addItemDecoration(DividerItemDecoration(this, LinearLayoutManager.VERTICAL))
+//
+//        recyclerView.layoutManager = LinearLayoutManager(this)
+//        recyclerView.addItemDecoration(DividerItemDecoration(this, LinearLayoutManager.VERTICAL))
         /**
          * Some Swipe Impl
          *
          */
-        recyclerView.whenSwipedTo {
-
+        recyclerView.whenSwipedTo(this) {
             left {
                 setColor(R.color.md_blue)
                 setIcon(R.drawable.ic_action_archive)

@@ -492,9 +492,6 @@ dimen notification_subtext_size
 dimen notification_top_pad
 dimen notification_top_pad_large_text
 dimen swipe_default_text_size
-dimen swipe_text_margin
-dimen swipe_text_margin_half
-dimen swipe_text_margin_less
 dimen tooltip_corner_radius
 dimen tooltip_horizontal_padding
 dimen tooltip_margin

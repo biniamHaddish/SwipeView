@@ -1,15 +1,25 @@
 package berhane.biniam.swipy.swipe
 
+import android.content.Context
 import android.graphics.Canvas
 import android.util.Log
 import android.view.View
+import androidx.annotation.ColorInt
+import androidx.annotation.ColorRes
 import androidx.annotation.RestrictTo
+import androidx.core.content.ContextCompat
+import androidx.core.content.ContextCompat.getColor
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.ItemTouchHelper.*
 import androidx.recyclerview.widget.RecyclerView
+import berhane.biniam.swipy.R
 import berhane.biniam.swipy.swipe.SwipeDirections.*
+import berhane.biniam.swipy.swipe.utils.RippleDirection
+import berhane.biniam.swipy.swipe.utils.SwipeTriggerRippleDrawable
+import java.security.AccessController.getContext
 import kotlin.math.abs
 
+/** @author Biniam Berhane **/
 enum class SwipeDirections {
     LEFT,
     RIGHT,
@@ -27,17 +37,17 @@ abstract class SwipeActionListener(
 
 ) : ItemTouchHelper.Callback(), SwipeActionsTrigger {
 
-    private val BASE_ALPHA = 1.0f
+    private val ALPHA = 1.0f
     private var isViewBeingCleared = false
     private var leftDistance: Float = -1f
     private var leftIsLong: Boolean = false
     private var rightDistance: Float = -1f
     private var rightIsLong: Boolean = false
 
-
+    private val swipeActionTriggerDrawable: SwipeTriggerRippleDrawable
+        get() = SwipeTriggerRippleDrawable()
 
     companion object {
-        private const val DEFAULT_POSITION = -1f
         private const val LONG_SWIPE_THRESHOLD_PERCENT = 40f / 100f
     }
 
@@ -54,43 +64,39 @@ abstract class SwipeActionListener(
         target: RecyclerView.ViewHolder
     ): Boolean = false
 
-    // Will Enable the Swipe Action
+    /** Will Enable the Swipe Action**/
     override fun isItemViewSwipeEnabled() = true
 
-    //  TODO( well since we have both the swipeAction implementation for the callback i have to correct this one so that it can only perform one action at a time)
-
-    //@RestrictTo(RestrictTo.Scope.LIBRARY_GROUP)
+    @RestrictTo(RestrictTo.Scope.LIBRARY_GROUP)
     override fun onSwiped(
         viewHolder: RecyclerView.ViewHolder,
         direction: Int
     ) {
-      //  val itemPos = viewHolder.adapterPosition
-
+        /** Now here i have to be able to implement the ripple animation
+        after swipe is performed
+         **/
         return when (direction) {
-
             LEFT -> {
                 when {
                     leftIsLong -> {
-                        //onSwipeLongLeftAction(itemPos)
+                        // far Left
+
                     }
                     else -> {
-                        // onSwipeLeftAction(position)
+                        //Just Left
                     }
                 }
             }
             RIGHT -> {
                 when {
                     rightIsLong -> {
-                        //  onSwipeLongRightAction(position)
+                        // far right
                     }
                     else -> {
-                        // onSwipeRightAction(position)
+                        // just Right
                     }
-
                 }
-
             }
-
             else -> {
                 throw IllegalStateException("Unknown direction What is that ?: $direction")
             }
@@ -102,9 +108,10 @@ abstract class SwipeActionListener(
         isViewBeingCleared = true
         val view = viewHolder.itemView
         ItemTouchHelper.Callback.getDefaultUIUtil().clearView(view)
-        view.alpha = BASE_ALPHA
+        view.alpha = ALPHA
     }
 
+    /**All the drawing stuff is getting done down here on this method **/
     override fun onChildDraw(
         canvas: Canvas, recyclerView: RecyclerView,
         viewHolder: RecyclerView.ViewHolder,
@@ -124,7 +131,7 @@ abstract class SwipeActionListener(
                     return
                 }
                 calculateSwipeVelocityAction(isCurrentlyActive, itemView, index, dX)
-                processSwipeAction(canvas, itemView, dX)
+                paintSwipeAction(canvas, itemView, dX)
             } else {
                 ItemTouchHelper.Callback.getDefaultUIUtil()
                     .onDraw(canvas, recyclerView, itemView, dX, dY, actionState, isCurrentlyActive)
@@ -133,9 +140,7 @@ abstract class SwipeActionListener(
         }
     }
 
-    /**
-     *  Only for my use
-     */
+    /*** Calculate the swipe directions and decide the action on that direction***/
     @RestrictTo(RestrictTo.Scope.LIBRARY_GROUP)
     private fun calculateSwipeVelocityAction(
         isCurrentlyActive: Boolean,
@@ -164,9 +169,9 @@ abstract class SwipeActionListener(
         }
     }
 
-
+    /** Start to decorate the Swiped gutter with the give color and icon and later text **/
     @RestrictTo(RestrictTo.Scope.LIBRARY_GROUP)
-    private fun processSwipeAction(canvas: Canvas, itemView: View, dX: Float) {
+    private fun paintSwipeAction(canvas: Canvas, itemView: View, dX: Float) {
         hideItemDependingOnDx(dX, itemView)
         when {
             getSwipeDirection(dX, itemView) == LONG_RIGHT -> {
@@ -188,8 +193,11 @@ abstract class SwipeActionListener(
         }
     }
 
+
+
+    /** Blurring the View as the slide is progressing **/
     private fun hideItemDependingOnDx(dX: Float, itemView: View) {
-        val alpha = BASE_ALPHA - abs(dX) / itemView.width.toFloat()
+        val alpha = ALPHA - abs(dX) / itemView.width.toFloat()
         itemView.alpha = alpha
         itemView.translationX = dX
     }
@@ -235,48 +243,37 @@ abstract class SwipeActionListener(
         }
     }
 
+    /**Will identify the swipe direction depending to which direction the user is swiping the itew**/
     private fun getSwipeDirection(dX: Float, itemView: View): SwipeDirections {
 
         when {
-            /**
-             * Swiped right
-             */
+            /** Swiped right**/
             dX > 0 -> {
                 rightDistance = dX
                 rightIsLong = rightDistance >= (LONG_SWIPE_THRESHOLD_PERCENT * itemView.measuredWidth)
                 return if (rightIsLong) {
-                    //Log.e("Long Right", "Long Right....")
                     LONG_RIGHT
                 } else {
-                    Log.d("Right", "Right....")
                     SwipeDirections.RIGHT
-
                 }
             }
-            /**
-             *Swiped Left
-             */
+            /**Swiped Left**/
             dX < 0 -> {
                 leftDistance = dX
                 leftIsLong = abs(leftDistance) >= (LONG_SWIPE_THRESHOLD_PERCENT * itemView.measuredWidth)
                 return if (leftIsLong) {
-                    Log.d("Long Left", "Long Left....")
                     LONG_LEFT
                 } else {
-                    Log.e("Left", "Left....")
                     SwipeDirections.LEFT
                 }
             }
-
         }
-
         return IDLE
-
     }
 
+    /** Draw Icon to the left of the slide gutter **/
     private fun drawSwipeLeftIcon(c: Canvas, itemView: View) {
-
-        val margin = swipeLeft?.margin ?: 35
+        val margin = swipeLeft?.margin ?: 0
         swipeLeft?.icon?.let {
             val itemMiddlePoint = getItemMiddlePoint(itemView)
             val intrinsicHalfHeight = it.intrinsicHeight / 2
@@ -292,6 +289,7 @@ abstract class SwipeActionListener(
         }
     }
 
+    /** Draw Icon to the far-left of the slide gutter **/
     private fun drawSwipeLongLeftIcon(c: Canvas, itemView: View) {
         val margin = swipeLongLeft?.margin ?: 0
         swipeLongLeft?.icon?.let {
@@ -304,6 +302,7 @@ abstract class SwipeActionListener(
         }
     }
 
+    /** Draw Icon to the Right of the slide gutter **/
     private fun drawSwipeRightIcon(c: Canvas, itemView: View) {
         val margin = swipeRight?.margin ?: 0
         swipeRight?.icon?.let {
@@ -322,9 +321,7 @@ abstract class SwipeActionListener(
     }
 
 
-    /**
-     * Long Right Icon setUp
-     */
+    /** Draw Icon to the far-Right of the slide gutter **/
     private fun drawSwipeLongRightIcon(c: Canvas, itemView: View) {
         val margin = swipeLongRight?.margin ?: 0
         swipeLongRight?.icon?.let {
@@ -340,15 +337,14 @@ abstract class SwipeActionListener(
         }
     }
 
-    // borowed from A
+    /** Swipe SwipeThreshold for our recyclerView  **/
     override fun getSwipeThreshold(viewHolder: RecyclerView.ViewHolder): Float {
         return 0.7f
     }
 
     private fun getItemMiddlePoint(itemView: View) = (itemView.bottom + itemView.top) / 2
-
     /**
-     * Swipe Actions below
+     * Swipe Actions depending to the direction below
      */
     private fun onSwipeLeftAction(adapterPosition: Int) {
         swipeLeft?.action?.invoke(adapterPosition)
@@ -367,10 +363,8 @@ abstract class SwipeActionListener(
         swipeLongRight?.action?.invoke(adapterPosition)
     }
 
-    /**
-     * lets do the Swipe action performed on this thing
-     *
-     */
+
+    /** lets do the Swipe action performed on this thing**/
     override fun swipeAction(
         isCurrentlyActive: Boolean,
         index: Int,
@@ -390,8 +384,7 @@ abstract class SwipeActionListener(
                 if (!isCurrentlyActive) onSwipeLongLeftAction(index)
             }
             IDLE -> {
-
-                Log.d("IDLE State ", "$isCurrentlyActive")
+                Log.e("IDLE State ", "$isCurrentlyActive")
             }
         }
     }

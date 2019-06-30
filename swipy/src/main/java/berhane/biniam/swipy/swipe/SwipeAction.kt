@@ -1,7 +1,9 @@
+
 package berhane.biniam.swipy.swipe
 
 import android.graphics.drawable.Drawable
 
+/** @author Biniam Berhane **/
 class SwipeAction(
     val text:String?=null,
     val background: Drawable? = null,
