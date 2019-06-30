@@ -1,8 +1,4 @@
 # SwipeView
-RecyclerView Swipe helper  library 
-
-
-
 
  It is good to note that the libary is only works with RecyclerView.
 
