@@ -9,7 +9,7 @@
 3. Short right swipe
 4. Long right swipe
 
-(../master/img/SwipyCode.png)
+![how it is done](../master/img/SwipyCode.png)
 
 
 
