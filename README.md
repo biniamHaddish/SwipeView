@@ -3,17 +3,12 @@
  It is good to note that the libary is only works with RecyclerView.
 
 **Swipy** is capable of handling multiple swipe actions per direction.
+![how it is done](../master/img/SwipyCode.png)
 
 1. Short left swipe
 2. Long left swipe
 3. Short right swipe
 4. Long right swipe
-
-![how it is done](../master/img/SwipyCode.png)
-
-
-
-
 
 **License**
 
