@@ -1,3 +1,4 @@
+[![](https://jitpack.io/v/biniamHaddish/SwipeView.svg)](https://jitpack.io/#biniamHaddish/SwipeView)
 # SwipeView
 
  It is good to note that the libary is only works with RecyclerView.
