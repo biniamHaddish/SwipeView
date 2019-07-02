@@ -9,7 +9,7 @@
 3. Short right swipe
 4. Long right swipe
 
-
+<img src="https://raw.githubusercontent.com/benhaddish/SwipeView/master/img/SwipyCode.png" width="600" />
 
 
 

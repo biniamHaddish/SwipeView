@@ -51,7 +51,7 @@ public class SampleRecyclerViewAdapter extends RecyclerView.Adapter<SampleRecycl
     public void onBindViewHolder(ViewHolder holder, int position) {
         try {
             holder.text1.setText(mItems.get(position));
-            holder.text2.setText("Swipe left or right to see what happens");
+            holder.text2.setText("Swipe left or right or far-right or far-left to see what happens");
         } catch(Exception e) {
             Log.e(TAG, e.getMessage());
         }
