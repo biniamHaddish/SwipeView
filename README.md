@@ -1,15 +1,7 @@
 
 
-# Swipy
-
+*swipy*: It is good to note that the libary is only works with RecyclerView.is capable of handling multiple swipe actions per direction.
 [![](https://jitpack.io/v/biniamHaddish/SwipeView.svg)](https://jitpack.io/#biniamHaddish/SwipeView)
-
- It is good to note that the libary is only works with RecyclerView.
-
-*Swipy*
-
-is capable of handling multiple swipe actions per direction.
-
 ![how it is done](../master/img/SwipyCodeSample.png)
 
 1. Short left swipe
