@@ -11,6 +11,9 @@ buildscript {
         classpath 'com.android.tools.build:gradle:3.5.0-beta05'
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
 
+        //novoda
+        classpath 'com.novoda:bintray-release:0.9.1'
+        //
         classpath 'com.jfrog.bintray.gradle:gradle-bintray-plugin:1.8.4'
         classpath 'com.github.dcendents:android-maven-gradle-plugin:2.1'
         // NOTE: Do not place your application dependencies here; they belong
@@ -27,5 +30,6 @@ allprojects {
 
 
 apply plugin: 'com.github.dcendents.android-maven'
+
 
 

@@ -1,6 +1,7 @@
 apply plugin: 'com.android.library'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
+apply plugin: 'com.novoda.bintray-release'
 
 android {
     compileSdkVersion 29
@@ -13,7 +14,6 @@ android {
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles 'consumer-rules.pro'
     }
-
 
     compileOptions {
         sourceCompatibility 1.8
@@ -45,9 +45,16 @@ dependencies {
     androidTestImplementation 'androidx.test.ext:junit:1.1.1'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
     implementation 'androidx.recyclerview:recyclerview:1.0.0'
-
-
 }
 
-apply from: 'publish.gradle'
+publish {
+    userOrg = 'benhaddish'
+    groupId = 'com.biniam.berhane'
+    uploadName = 'maven'
+    artifactId = 'swipy'
+    publishVersion = '0.6.0'
+    desc = 'Android RecyclerView swipe helper'
+    website = 'https://github.com/biniamHaddish/SwipeView'
+}
+
 

@@ -1,22 +1,16 @@
 package berhane.biniam.swipy.swipe
 
-import android.content.Context
 import android.graphics.Canvas
+import android.graphics.Paint
+import android.graphics.PorterDuff
+import android.graphics.PorterDuffXfermode
 import android.util.Log
 import android.view.View
-import androidx.annotation.ColorInt
-import androidx.annotation.ColorRes
 import androidx.annotation.RestrictTo
-import androidx.core.content.ContextCompat
-import androidx.core.content.ContextCompat.getColor
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.ItemTouchHelper.*
 import androidx.recyclerview.widget.RecyclerView
-import berhane.biniam.swipy.R
 import berhane.biniam.swipy.swipe.SwipeDirections.*
-import berhane.biniam.swipy.swipe.utils.RippleDirection
-import berhane.biniam.swipy.swipe.utils.SwipeTriggerRippleDrawable
-import java.security.AccessController.getContext
 import kotlin.math.abs
 
 /** @author Biniam Berhane **/
@@ -43,9 +37,8 @@ abstract class SwipeActionListener(
     private var leftIsLong: Boolean = false
     private var rightDistance: Float = -1f
     private var rightIsLong: Boolean = false
+    private val clearPaint = Paint().apply { xfermode = PorterDuffXfermode(PorterDuff.Mode.CLEAR) }
 
-    private val swipeActionTriggerDrawable: SwipeTriggerRippleDrawable
-        get() = SwipeTriggerRippleDrawable()
 
     companion object {
         private const val LONG_SWIPE_THRESHOLD_PERCENT = 40f / 100f
@@ -121,6 +114,32 @@ abstract class SwipeActionListener(
     ) {
         val itemView = viewHolder.itemView
         val index = viewHolder.adapterPosition
+        val isCanceled = dX == 0f && !isCurrentlyActive
+
+        if (isCanceled) {
+
+            clearCanvas(
+                canvas,
+                itemView.right + dX,
+                itemView.top.toFloat(),
+                itemView.right.toFloat(),
+                itemView.bottom.toFloat()
+            )
+
+            super.onChildDraw(
+                canvas,
+                recyclerView,
+                viewHolder,
+                dX,
+                dY,
+                actionState,
+                isCurrentlyActive
+            )
+
+            return
+        }
+
+
         if (index == -1) return
 
         if (isViewBeingCleared) {
@@ -192,7 +211,6 @@ abstract class SwipeActionListener(
             }
         }
     }
-
 
 
     /** Blurring the View as the slide is progressing **/
@@ -387,5 +405,15 @@ abstract class SwipeActionListener(
                 Log.e("IDLE State ", "$isCurrentlyActive")
             }
         }
+    }
+
+    private fun clearCanvas(
+        canvas: Canvas?,
+        left: Float,
+        top: Float,
+        right: Float,
+        bottom: Float
+    ) {
+        canvas?.drawRect(left, top, right, bottom, clearPaint)
     }
 }
