@@ -2,6 +2,8 @@
 # Swipy
 *swipy*: It is good to note that the libary is only works with RecyclerView. 
 It is capable of handling multiple swipe actions per direction.
+
+
 [![](https://jitpack.io/v/biniamHaddish/SwipeView.svg)](https://jitpack.io/#biniamHaddish/SwipeView)
 ![how it is done](../master/img/SwipyCodeSample.png)
 
