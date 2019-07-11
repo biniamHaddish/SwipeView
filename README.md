@@ -17,6 +17,19 @@ is capable of handling multiple swipe actions per direction.
 3. Short right swipe
 4. Long right swipe
 
+## Gradle Dependency
+
+Add this to your module's `build.gradle` file:
+
+```gradle
+dependencies {
+
+   implementation 'com.biniam.berhane:swipy:0.6.0'
+}
+```
+
+
+
 **License**
 
 
