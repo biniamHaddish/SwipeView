@@ -5,12 +5,12 @@ apply plugin: 'com.novoda.bintray-release'
 
 android {
     compileSdkVersion 29
+
     defaultConfig {
         minSdkVersion 22
         targetSdkVersion 29
         versionCode 1
         versionName "0.6.0"
-
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles 'consumer-rules.pro'
     }
@@ -37,6 +37,7 @@ android {
 }
 
 dependencies {
+
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
     implementation 'androidx.appcompat:appcompat:1.0.2'
@@ -50,10 +51,10 @@ dependencies {
 publish {
     userOrg = 'benhaddish'
     groupId = 'com.biniam.berhane'
-    uploadName = 'maven'
+    uploadName = 'SwipeView'
     artifactId = 'swipy'
     publishVersion = '0.6.0'
-    desc = 'Android RecyclerView swipe helper'
+    desc = 'Kotlin RecyclerView swipe helper library '
     website = 'https://github.com/biniamHaddish/SwipeView'
 }
 
