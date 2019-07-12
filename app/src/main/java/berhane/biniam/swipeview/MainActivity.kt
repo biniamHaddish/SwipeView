@@ -23,7 +23,7 @@ class MainActivity : AppCompatActivity() {
                 setIcon(R.drawable.pin)
                 callback {
                     mAdapter!!.notifyDataSetChanged()
-                    toastIt("Swiped  Long Left $it")
+                    toastIt("Pinned $it")
                 }
             }
             right {
@@ -31,7 +31,7 @@ class MainActivity : AppCompatActivity() {
                 setIcon(R.drawable.ic_action_star)
                 callback{
                     mAdapter!!.notifyDataSetChanged()
-                    toastIt("Swiped to Right")
+                    toastIt("Starred ")
                 }
             }
 
@@ -40,7 +40,7 @@ class MainActivity : AppCompatActivity() {
                 setIcon(R.drawable.ic_action_archive)
                 callback {
                     mAdapter!!.notifyDataSetChanged()
-                    toastIt("Swiped to Left")
+                    toastIt("Archived.")
                 }
             }
             longLeft {
@@ -49,7 +49,7 @@ class MainActivity : AppCompatActivity() {
                 callback {
                     mAdapter!!.removeItem(it)
                     mAdapter!!.notifyDataSetChanged()
-                    toastIt("Item Deleted and Removed from the View")
+                    toastIt("Deleted")
                 }
             }
         }
