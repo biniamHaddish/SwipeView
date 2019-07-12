@@ -19,7 +19,7 @@ Add this to your module's `build.gradle` file:
 ```gradle
 dependencies {
 
-   implementation 'com.biniam.berhane:swipy:0.6.0'
+   implementation 'berhane.biniam.swipeview:swipeview:0.6.0
 }
 ```
 
