@@ -12,7 +12,6 @@ class MainActivity : AppCompatActivity() {
 
     private var mAdapter: SampleRecyclerViewAdapter? = null
 
-
     // Create and set an adapter
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -20,15 +19,15 @@ class MainActivity : AppCompatActivity() {
 
         recyclerView.whenSwipedTo(this) {
             left {
-                setColor(R.color.md_blue)
-                setIcon(R.drawable.ic_action_archive)
+                setColor(R.color.md_green)
+                setIcon(R.drawable.pin)
                 callback {
                     mAdapter!!.notifyDataSetChanged()
-                    toastIt("Swiped to Left")
+                    toastIt("Swiped  Long Left $it")
                 }
             }
             right {
-                setColor(R.color.md_red)
+                setColor(R.color.md_orange)
                 setIcon(R.drawable.ic_action_star)
                 callback{
                     mAdapter!!.notifyDataSetChanged()
@@ -37,20 +36,20 @@ class MainActivity : AppCompatActivity() {
             }
 
             longRight {
-                setColor(R.color.md_orange)
+                setColor(R.color.md_blue)
+                setIcon(R.drawable.ic_action_archive)
+                callback {
+                    mAdapter!!.notifyDataSetChanged()
+                    toastIt("Swiped to Left")
+                }
+            }
+            longLeft {
+                setColor(R.color.md_red)
                 setIcon(R.drawable.ic_action_delete)
                 callback {
                     mAdapter!!.removeItem(it)
                     mAdapter!!.notifyDataSetChanged()
-                     toastIt("Item Deleted and Removed from the View")
-                }
-            }
-            longLeft {
-                setColor(R.color.md_green)
-                setIcon(R.drawable.ic_action_unread)
-                callback {
-                    mAdapter!!.notifyDataSetChanged()
-                    toastIt("Swiped  Long Left $it")
+                    toastIt("Item Deleted and Removed from the View")
                 }
             }
         }

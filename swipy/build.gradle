@@ -3,20 +3,6 @@ apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
 apply plugin: 'com.novoda.bintray-release'
 
-
-//publish {
-//    userOrg = 'benhaddish'
-//    groupId = 'com.biniam.berhane'
-//    uploadName = 'SwipeView'
-//    artifactId = 'swipy'
-//    publishVersion = '0.6.0'
-//    desc = 'Kotlin RecyclerView swipe helper library '
-//    website = 'https://github.com/biniamHaddish/SwipeView'
-//}
-
-
-
-
 android {
     compileSdkVersion 29
 
