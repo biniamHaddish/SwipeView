@@ -66,11 +66,11 @@ dependencies {
 publish {
 
     def groupProjectID = 'berhane.biniam.swipeview'
-    def artifactProjectID = 'swipy'
+    def artifactProjectID = 'swipeview'
     def publishVersionID = '0.6.0'
 
     userOrg = 'benhaddish'
-    repoName = 'swipy'
+    repoName = 'swipeview'
     groupId = groupProjectID
     artifactId = artifactProjectID
     publishVersion = publishVersionID
