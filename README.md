@@ -1,6 +1,6 @@
 
 # Swipy
-*swipy*: It is good to note that the libary is only works with RecyclerView. 
+*swipy*: It is good to note that the library only works with RecyclerView. 
 It is capable of handling multiple swipe actions per direction.
 
 
