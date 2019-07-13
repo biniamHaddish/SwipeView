@@ -20,17 +20,16 @@ android {
         targetCompatibility 1.8
     }
 
+
     buildTypes {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
-    
+
     testOptions {
-        unitTests {
-            includeAndroidResources = true
-        }
+        unitTests.includeAndroidResources = true
     }
     buildToolsVersion = '28.0.3'
 
