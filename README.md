@@ -5,7 +5,7 @@ It is capable of handling multiple swipe actions per direction.
 
 
 [![](https://jitpack.io/v/biniamHaddish/SwipeView.svg)](https://jitpack.io/#biniamHaddish/SwipeView)
-![how it is done](../master/img/SwipyCodeSample.png)
+![how it is done](../master/img/sampleCode.png)
 
 1. Short left swipe
 2. Long left swipe
