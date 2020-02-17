@@ -51,8 +51,6 @@ class SwipeBuilder {
     }
 
 
-
-
     /**
      * When swiped to left
      */
@@ -82,8 +80,12 @@ class SwipeBuilder {
     }
 }
 
+
 /****/
-fun RecyclerView.whenSwipedTo(context:Context,block: SwipeBuilder.() -> Unit) {
+fun RecyclerView.whenSwipedTo(
+    context: Context,
+    block: SwipeBuilder.() -> Unit
+) {
 
     with(SwipeBuilder()) {
 
@@ -94,5 +96,16 @@ fun RecyclerView.whenSwipedTo(context:Context,block: SwipeBuilder.() -> Unit) {
         this.addItemDecoration(DividerItemDecoration(context, LinearLayoutManager.VERTICAL))
         ItemTouchHelper(it).attachToRecyclerView(this)
     }
+}
+
+inline fun <reified IT : Any> RecyclerView.whenSwipedOn(
+    context: Context,
+    noinline  block: SwipeBuilder.() -> Unit
+) {
+    @Suppress("UNCHECKED_CAST")
+    return whenSwipedTo(
+        context=context,
+        block = block
+    )
 }
 

@@ -60,7 +60,7 @@ abstract class SwipeActionListener(
     /** Will Enable the Swipe Action**/
     override fun isItemViewSwipeEnabled() = true
 
-    @RestrictTo(RestrictTo.Scope.LIBRARY_GROUP)
+  //  @RestrictTo(RestrictTo.Scope.LIBRARY_GROUP)
     override fun onSwiped(
         viewHolder: RecyclerView.ViewHolder,
         direction: Int
