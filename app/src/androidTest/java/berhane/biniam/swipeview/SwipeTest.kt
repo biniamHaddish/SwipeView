@@ -25,18 +25,15 @@ class SwipeTest {
     @get: Rule
     val activityRule: ActivityScenarioRule<MainActivity> = ActivityScenarioRule(MainActivity::class.java)
 
-    /**
-     * testing if the Recyclerview is on view
-     */
     private lateinit var recyclerView: RecyclerView
 
 
-    @Before fun setup(){
+    @Before fun test_setup(){
         recyclerView= RecyclerView(ApplicationProvider.getApplicationContext())
     }
 
     @Test
-    fun swipeRight() {
+    fun test_swipeRight() {
         onView(withId(R.id.email_recycler)).check(matches(isDisplayed()))
         onView(withId(R.id.email_recycler))
             .perform(ViewActions.swipeRight())
@@ -44,10 +41,9 @@ class SwipeTest {
     }
 
     @Test
-    fun swipeLeft(){
+    fun test_swipeLeft(){
         onView(withId(R.id.email_recycler)).check(matches(isDisplayed()))
         onView(withId(R.id.email_recycler))
-            .perform(a)
         onView(withId(R.id.email_recycler))
             .perform(ViewActions.swipeLeft())
             .check(matches(isDisplayed()))
